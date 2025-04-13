@@ -170,24 +170,24 @@ export default function BookingPage() {
         <p className="text-lg text-muted-foreground">Përzgjidh datën, orarin dhe shërbimin e dëshiruar</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Card className="p-6 flex flex-col items-center lg:items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 auto-rows-auto">
+        <Card className="p-6 flex flex-col items-center"> {/* Set minimum height here */}
           <h2 className="text-xl font-semibold mb-4">Select Date</h2>
-          <div className="flex justify-center gap-2">
+          <div className="flex justify-center w-full">
             <Calendar
               mode="single"
               selected={date}
               onSelect={setDate}
               month={displayMonth}
               onMonthChange={handleMonthChange}
-              className="rounded-md border"
+              className="rounded-md border mx-auto"
               disabled={(date) => isBefore(startOfDay(date), startOfDay(currentDate))}
             />
           </div>
-          <div className="w-full flex justify-center items-center mt-5">
-            <Image width={600} height={300} alt="/" src="/logo.svg" className="w-2/4" />
-          </div>
         </Card>
+
+
+
 
         <Card className="p-6">
           <h2 className="text-xl font-semibold mb-4">Detaje të Rezervimit</h2>

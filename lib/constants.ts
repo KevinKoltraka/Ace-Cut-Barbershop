@@ -15,53 +15,54 @@ export const timeSlots = [
 export const services = [
   {
     id: "haircut",
-    name: "Classic Haircut",
+    name: "Prerje Klasike",
     duration: "45 min",
-    price: "35 BGN",
+    price: "35 Lekë",
   },
   {
     id: "beard",
-    name: "Beard Trim",
+    name: "Rregullim Mjekre",
     duration: "30 min",
-    price: "25 BGN",
+    price: "25 Lekë",
   },
   {
     id: "combo",
-    name: "Combo Hair & Beard",
+    name: "Kombinim Flokë & Mjekër",
     duration: "60 min",
-    price: "50 BGN",
+    price: "50 Lekë",
   },
   {
     id: "fatherSon",
-    name: "Father & Son",
+    name: "Baba & Bir",
     duration: "75 min",
-    price: "65 BGN",
+    price: "65 Lekë",
   },
   {
     id: "styling",
-    name: "Perfect Styling",
+    name: "Stilim i Përkryer",
     duration: "15 min",
-    price: "15 BGN",
+    price: "15 Lekë",
   },
   {
     id: "camouflage",
-    name: "Beard & Camouflage",
+    name: "Mjekër & Kamuflim",
     duration: "25 min",
-    price: "25 BGN",
+    price: "25 Lekë",
   },
   {
     id: "eyebrows",
-    name: "Eyebrows trim & shape",
+    name: "Vetulla – rregullim & formësim",
     duration: "15 min",
-    price: "15 BGN",
+    price: "15 Lekë",
   },
   {
     id: "face",
-    name: "Face Cleansing",
+    name: "Pastrimi i Fytyrës",
     duration: "20 min",
-    price: "25 BGN",
+    price: "25 Lekë",
   },
 ];
+
 
 export const barbers = [
   { id: "Alexander", name: "Alexander Petrov" },

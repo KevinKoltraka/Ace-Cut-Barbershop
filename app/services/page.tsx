@@ -8,69 +8,70 @@ import { useRouter } from "next/navigation";
 const services = [
   {
     id: "haircut",
-    name: "Classic Haircut",
+    name: "Prerje Klasike",
     img: "/haircut.webp",
-    description: "Traditional haircut with modern styling",
+    description: "Prerje tradicionale me stil modern",
     duration: "45 min",
-    price: "35 BGN",
+    price: "35 Lekë",
   },
   {
     id: "beard",
-    name: "Beard Trim",
+    name: "Rregullim Mjekre",
     img: "/beardShave.webp",
-    description: "Professional beard shaping and grooming",
+    description: "Formësim dhe kujdes profesional për mjekrën",
     duration: "30 min",
-    price: "20 BGN",
+    price: "20 Lekë",
   },
   {
     id: "combo",
-    name: "Combo Hair & Beard",
+    name: "Kombinim Flokë & Mjekër",
     img: "/combo.webp",
-    description: "Complete grooming package - the practical choice",
+    description: "Paketa e plotë e kujdesit – zgjedhja praktike",
     duration: "60 min",
-    price: "50 BGN",
+    price: "50 Lekë",
   },
   {
     id: "fatherSon",
-    name: "Father & Son",
+    name: "Baba & Bir",
     img: "/fatherSon.webp",
-    description: "Get the best style for you and your son.",
+    description: "Merrni stilin më të mirë për ju dhe djalin tuaj.",
     duration: "75 min",
-    price: "65 BGN",
+    price: "65 Lekë",
   },
   {
     id: "styling",
-    name: "Perfect Styling",
+    name: "Stilim i Përkryer",
     img: "/styling.webp",
-    description: "Get your hair in the best possible styling",
+    description: "Bëje stilin e flokëve në mënyrën më të mirë të mundshme",
     duration: "15 min",
-    price: "15 BGN",
+    price: "15 Lekë",
   },
   {
     id: "camouflage",
-    name: "Beard & Camouflage",
+    name: "Mjekër & Kamuflim",
     img: "/camouflageBeard.webp",
-    description: "Shape, shave and colour for your beard.",
+    description: "Formësim, rruajtje dhe ngjyrim për mjekrën tuaj.",
     duration: "25 min",
-    price: "25 BGN",
+    price: "25 Lekë",
   },
   {
     id: "eyebrows",
-    name: "Eyebrows Trim",
+    name: "Rregullim Vetullash",
     img: "/eyebrows.webp",
-    description: "Shape your eyebrows to get the perfect look.",
+    description: "Formëso vetullat për një pamje perfekte.",
     duration: "15 min",
-    price: "15 BGN",
+    price: "15 Lekë",
   },
   {
     id: "face",
-    name: "Face Cleansing",
+    name: "Pastrimi i Fytyrës",
     img: "/cleansing.webp",
-    description: "Fresh and clean skin to start your day.",
+    description: "Lëkurë e pastër dhe e freskët për të nisur ditën.",
     duration: "20 min",
-    price: "25 BGN",
+    price: "25 Lekë",
   },
 ];
+
 
 export default function ServicesPage() {
   const router = useRouter();
@@ -116,7 +117,7 @@ export default function ServicesPage() {
               className="absolute -top-20 lg:-top-4 left-16 -z-50"
             />
             <div className="space-y-2">
-              <p className="text-sm">Duration: {service.duration}</p>
+              <p className="text-sm">Kohëzgjatja: {service.duration}</p>
               <p className="text-lg font-semibold flex justify-start items-center whitespace-nowrap w-1/3">
                 {service.price}
               </p>
