@@ -23,14 +23,13 @@ const Navbar = () => {
       <div className="flex flex-col lg:flex-row w-full items-center justify-center px-4 max-w-7xl mx-auto">
         <div className="flex items-center justify-between w-full">
           <Link href="/">
-            <Image
-              width={400}
-              height={100}
-              alt="/"
-              src="/logo.svg"
-              className="w-48"
-            />
+            <div className="flex items-center space-x-2 text-white text-2xl font-bold">
+              <span className="text-orange-500 text-sm">x</span>
+              <span className="text-neutral-900 dark:text-white">Ace Cut</span>
+              <span className="text-orange-500 text-sm">x</span>
+            </div>
           </Link>
+
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="lg:hidden absolute right-4 top-5 z-100" // Increased z-index here
@@ -45,13 +44,11 @@ const Navbar = () => {
             <Link
               key={route.href}
               href={route.href}
-              className={`text-sm font-medium whitespace-nowrap transition-colors hover:text-primary ${
-                pathname === route.href
+              className={`text-sm font-medium whitespace-nowrap transition-colors hover:text-primary ${pathname === route.href
                   ? "text-black dark:text-white"
                   : "text-muted-foreground"
-              }${
-                route.label === "Book Now" ? " text-yellow-600 font-bold" : ""
-              }`}
+                }${route.label === "Book Now" ? " text-yellow-600 font-bold" : ""
+                }`}
             >
               {route.label}
             </Link>
@@ -62,22 +59,20 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       <div
-        className={`lg:hidden fixed top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-lg flex flex-col justify-center items-center transition-all duration-300 ease-in-out z-40 ${
-          menuOpen
+        className={`lg:hidden fixed top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-lg flex flex-col justify-center items-center transition-all duration-300 ease-in-out z-40 ${menuOpen
             ? "translate-x-0 opacity-100 visible"
             : "-translate-x-full opacity-0 invisible"
-        }`}
+          }`}
       >
         <div className="flex flex-col items-center space-y-6 py-4">
           {routes.map((route) => (
             <Link
               key={route.href}
               href={route.href}
-              className={`font-medium transition-colors text-2xl hover:text-primary ${
-                pathname === route.href
+              className={`font-medium transition-colors text-2xl hover:text-primary ${pathname === route.href
                   ? "text-foreground"
                   : "text-muted-foreground"
-              }${route.label === "Book Now" ? " text-yellow-600" : ""}`}
+                }${route.label === "Book Now" ? " text-yellow-600" : ""}`}
               onClick={() => setMenuOpen(false)}
             >
               {route.label}

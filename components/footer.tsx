@@ -8,16 +8,21 @@ export default function Footer() {
       <div className="container mx-auto flex flex-col px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Image
-                width={600}
-                height={200}
-                alt="/"
-                src="/logo.svg"
-                className="w-2/3"
-                style={{ borderRadius: "20px", height: "150px" }} // set your preferred height
-              />
 
+            <div className="flex items-center space-x-2 mb-4">
+              <div
+                className="w-2/3 flex items-center justify-center"
+                style={{ borderRadius: "20px", height: "100px" }}
+              >
+                <span className="text-amber-500 text-sm">x</span>
+                <span
+                  className="mx-4 text-4xl font-bold text-neutral-900 dark:text-white"
+                  style={{ fontFamily: 'Roboto, sans-serif' }}
+                >
+                  Ace Cut
+                </span>
+                <span className="text-amber-500 text-sm">x</span>
+              </div>
             </div>
 
 
