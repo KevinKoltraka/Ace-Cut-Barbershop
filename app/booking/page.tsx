@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import { useEffect, useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import { Card } from "@/components/ui/card";
@@ -14,18 +14,19 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { addMonths, isBefore, isSameDay, startOfDay, format } from "date-fns";
-import { barbers, services, timeSlots } from "@/lib/constants";
-import { Phone } from "lucide-react";
+import { isBefore, isSameDay, startOfDay, format } from "date-fns";
+import { services, timeSlots } from "@/lib/constants";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 export default function BookingPage() {
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
   const [selectedTime, setSelectedTime] = useState<string>("");
   const [selectedService, setSelectedService] = useState<string>("");
-  const [selectedBarber, setSelectedBarber] = useState<string>("");
   const [customerName, setCustomerName] = useState<string>("");
   const [customerPhone, setCustomerPhone] = useState<string>("");
+  const [contactMethod, setContactMethod] = useState<string>("whatsapp");
   const { toast } = useToast();
 
   const searchParams = useSearchParams();
@@ -66,16 +67,6 @@ export default function BookingPage() {
           setSelectedService(matchingService.name);
         }
       }
-
-      const barber = searchParams.get("barber");
-      if (barber) {
-        const matchingBarber = barbers.find(
-          (b) => b.name === decodeURIComponent(barber)
-        );
-        if (matchingBarber) {
-          setSelectedBarber(matchingBarber.name);
-        }
-      }
     }
   }, [searchParams]);
 
@@ -105,12 +96,11 @@ export default function BookingPage() {
     }
   }, [date, toast]);
 
-  const handleBooking = async () => {
+  const handleBooking = () => {
     if (
       !date ||
       !selectedTime ||
       !selectedService ||
-      !selectedBarber ||
       !customerName ||
       !customerPhone
     ) {
@@ -122,37 +112,18 @@ export default function BookingPage() {
       return;
     }
 
-    toast({
-      title: "Booking Confirmed!",
-      description: `Your appointment has been scheduled for ${date.toLocaleDateString()} at ${selectedTime}.`,
-    });
-
+    // Format the date in a readable format
     const formattedDate = date.toLocaleDateString();
 
+    // Create the message
+    const message = `Hello, I'm ${customerName} with phone number ${customerPhone}. I would like to book a ${selectedService} on ${formattedDate} at ${selectedTime}. Is this time slot available?`;
+
+    // The phone number to use for both WhatsApp and SMS
+    const phoneNumber = "355699929229";
+
     try {
-      const emailResponse = await fetch("/api/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          number: customerPhone,
-          name: customerName,
-          barber: selectedBarber,
-          service: selectedService,
-          date: formattedDate,
-          time: selectedTime,
-        }),
-      });
-
-      if (emailResponse.ok) {
-        toast({
-          title: "Email Sent",
-          description: "A confirmation email has been sent to your inbox.",
-        });
-      }
-
-      const bookingResponse = await fetch("/api/bookings", {
+      // Record the booking in your system
+      fetch("/api/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -163,27 +134,46 @@ export default function BookingPage() {
         }),
       });
 
-      if (!bookingResponse.ok) {
-        const errorData = await bookingResponse.json();
+      // Update local state
+      setBookedSlots((prev) => [...prev, selectedTime]);
+
+      if (contactMethod === "whatsapp") {
+        // Encode the message for URL
+        const encodedMessage = encodeURIComponent(message);
+        // Create WhatsApp URL targeting your specific number
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+        // Open WhatsApp in a new tab
+        window.open(whatsappUrl, "_blank");
+        
         toast({
-          title: "Booking Failed",
-          description:
-            errorData.error || "The selected slot is already booked.",
-          variant: "destructive",
+          title: "Redirecting to WhatsApp",
+          description: "Please send the message to complete your booking.",
+        });
+      } else {
+        // For SMS
+        const encodedMessage = encodeURIComponent(message);
+        // SMS URL scheme
+        const smsUrl = `sms:${phoneNumber}?body=${encodedMessage}`;
+        // Open SMS app
+        window.location.href = smsUrl;
+        
+        toast({
+          title: "Opening SMS app",
+          description: "Please send the message to complete your booking.",
         });
       }
 
+      // Reset form
       setSelectedTime("");
       setSelectedService("");
-      setSelectedBarber("");
       setCustomerName("");
       setCustomerPhone("");
-      setBookedSlots((prev) => [...prev, selectedTime]);
+      
     } catch (error) {
       console.error(error);
       toast({
         title: "Error",
-        description: "Failed to send confirmation email or save booking time",
+        description: "Failed to process your booking request",
         variant: "destructive",
       });
     }
@@ -253,29 +243,6 @@ export default function BookingPage() {
               />
             </div>
 
-            {/* <div>
-              <label className="text-sm font-medium mb-2 block">
-                Select Barber
-              </label>
-              <Select
-                onValueChange={(value) => {
-                  setSelectedBarber(value);
-                }}
-                value={selectedBarber}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Choose a barber" />
-                </SelectTrigger>
-                <SelectContent>
-                  {barbers.map((barber) => (
-                    <SelectItem key={barber.id} value={barber.name}>
-                      {barber.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div> */}
-
             <div>
               <label className="text-sm font-medium mb-2 block">
                 Zgjidhni Shërbimin
@@ -316,6 +283,26 @@ export default function BookingPage() {
                 </SelectContent>
               </Select>
             </div>
+            
+            <div>
+              <label className="text-sm font-medium mb-2 block">
+                Contact Method
+              </label>
+              <RadioGroup 
+                value={contactMethod} 
+                onValueChange={setContactMethod}
+                className="flex space-x-4"
+              >
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="whatsapp" id="whatsapp" />
+                  <Label htmlFor="whatsapp">WhatsApp</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="sms" id="sms" />
+                  <Label htmlFor="sms">SMS</Label>
+                </div>
+              </RadioGroup>
+            </div>
 
             <Button
               className="w-full mt-4"
@@ -324,7 +311,6 @@ export default function BookingPage() {
                 !date ||
                 !selectedTime ||
                 !selectedService ||
-                !selectedBarber ||
                 !customerName ||
                 !customerPhone
               }

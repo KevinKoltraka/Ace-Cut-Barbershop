@@ -14,6 +14,7 @@ interface BookingEmailProps {
   service: string;
   date: string;
   time: string;
+  phone: string;
 }
 
 export default function BookingEmail({
@@ -22,6 +23,7 @@ export default function BookingEmail({
   date,
   time,
   name,
+  phone,
 }: BookingEmailProps) {
   return (
     <Html>
@@ -53,17 +55,17 @@ export default function BookingEmail({
           <Text
             style={{ fontSize: "16px", marginBottom: "10px", color: "#333" }}
           >
-            <strong>Barber:</strong> {barber}
-          </Text>
-          <Text
-            style={{ fontSize: "16px", marginBottom: "10px", color: "#333" }}
-          >
             <strong>Service:</strong> {service}
           </Text>
           <Text
             style={{ fontSize: "16px", marginBottom: "10px", color: "#333" }}
           >
             <strong>Date:</strong> {date}
+          </Text>
+          <Text
+            style={{ fontSize: "16px", marginBottom: "10px", color: "#333" }}
+          >
+            <strong>Phone:</strong> {phone}
           </Text>
           <Text
             style={{ fontSize: "16px", marginBottom: "20px", color: "#333" }}

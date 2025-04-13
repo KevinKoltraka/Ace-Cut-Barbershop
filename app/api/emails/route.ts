@@ -5,22 +5,31 @@ import { Resend } from "resend";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { email, name, barber, service, date, time } = body;
+    const { number, name, barber, service, date, time } = body;
 
-    if (!email || !barber || !service || !date || !time) {
+    // Validate required fields
+    if (!number || !service || !date || !time || !name) {
       return NextResponse.json(
         { message: "Missing required fields" },
         { status: 400 }
       );
     }
 
-    const resend = new Resend(process.env.RESEND_API_KEY); // ✅ moved inside
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
+    // Send to your business email
     const emailHtml = await resend.emails.send({
       from: "Ace Cut <onboarding@resend.dev>",
-      to: email,
-      subject: "Your Booking Confirmation",
-      react: BookingEmail({ barber, service, date, time, name }),
+      to: "kevikoltraka157@gmail.com", // Replace with your actual business email
+      subject: "New Booking Confirmation",
+      react: BookingEmail({ 
+        barber, 
+        service, 
+        date, 
+        time, 
+        name,
+        phone: number 
+      }),
     });
 
     return NextResponse.json(
