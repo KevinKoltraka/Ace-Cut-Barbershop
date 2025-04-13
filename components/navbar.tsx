@@ -27,7 +27,7 @@ const Navbar = () => {
               width={400}
               height={100}
               alt="/"
-              src="/logo4.svg"
+              src="/logo.svg"
               className="w-48"
             />
           </Link>

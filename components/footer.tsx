@@ -13,10 +13,11 @@ export default function Footer() {
                 width={600}
                 height={200}
                 alt="/"
-                src="/logo3.svg"
+                src="/logo.svg"
                 className="w-2/3"
-                style={{ borderRadius: "20px" }}
+                style={{ borderRadius: "20px", height: "150px" }} // set your preferred height
               />
+
             </div>
 
 
@@ -62,7 +63,7 @@ export default function Footer() {
 
           <div>
             <h3 className="font-semibold mb-4">Our Location</h3>
-            <div className="w-full h-64 overflow-hidden" style={{ borderRadius: "20px" }}> 
+            <div className="w-full h-64 overflow-hidden" style={{ borderRadius: "20px" }}>
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.708130190718!2d19.80495699291967!3d41.31521267790919!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x135031db120e3a5b%3A0x95ab118a163ecd52!2sAce%20Cut!5e0!3m2!1sen!2s!4v1744556002940!5m2!1sen!2s"
                 width="100%"
