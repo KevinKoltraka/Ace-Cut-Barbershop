@@ -123,9 +123,23 @@ export default function BookingPage() {
           description: "Please send the message to complete your booking.",
         })
       } else {
-        // For SMS: format may vary by device/browser but standard format is used
+        // For SMS: Using tel: protocol which is more widely supported
         const encodedMessage = encodeURIComponent(message)
-        const smsUrl = `sms:${phoneNumber}?body=${encodedMessage}`
+
+        // Different formats for different devices
+        let smsUrl
+
+        // Check if iOS
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+
+        if (isIOS) {
+          // iOS format
+          smsUrl = `sms:${phoneNumber}&body=${encodedMessage}`
+        } else {
+          // Android and others format
+          smsUrl = `sms:${phoneNumber}?body=${encodedMessage}`
+        }
+
         window.location.href = smsUrl
 
         toast({
