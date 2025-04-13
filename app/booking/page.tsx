@@ -1,125 +1,97 @@
-"use client";
-import React from "react";
-import { useEffect, useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
-import { Card } from "@/components/ui/card";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { useSearchParams } from "next/navigation";
-import Image from "next/image";
-import { isBefore, isSameDay, startOfDay, format } from "date-fns";
-import { services, timeSlots } from "@/lib/constants";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
+"use client"
+import { useEffect, useState } from "react"
+import { Calendar } from "@/components/ui/calendar"
+import { Card } from "@/components/ui/card"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Button } from "@/components/ui/button"
+import { useToast } from "@/components/ui/use-toast"
+import { useSearchParams } from "next/navigation"
+import Image from "next/image"
+import { isBefore, isSameDay, startOfDay, format } from "date-fns"
+import { services, timeSlots } from "@/lib/constants"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
 
 export default function BookingPage() {
-  const [date, setDate] = useState<Date | undefined>(undefined);
-  const [bookedSlots, setBookedSlots] = useState<string[]>([]);
-  const [selectedTime, setSelectedTime] = useState<string>("");
-  const [selectedService, setSelectedService] = useState<string>("");
-  const [customerName, setCustomerName] = useState<string>("");
-  const [customerPhone, setCustomerPhone] = useState<string>("");
-  const [contactMethod, setContactMethod] = useState<string>("whatsapp");
-  const { toast } = useToast();
+  const [date, setDate] = useState<Date | undefined>(undefined)
+  const [bookedSlots, setBookedSlots] = useState<string[]>([])
+  const [selectedTime, setSelectedTime] = useState<string>("")
+  const [selectedService, setSelectedService] = useState<string>("")
+  const [customerName, setCustomerName] = useState<string>("")
+  const [customerPhone, setCustomerPhone] = useState<string>("")
+  const [contactMethod, setContactMethod] = useState<string>("whatsapp")
+  const { toast } = useToast()
 
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
 
-  const currentDate = new Date();
-  const [displayMonth, setDisplayMonth] = useState<Date>(new Date());
+  const currentDate = new Date()
+  const [displayMonth, setDisplayMonth] = useState<Date>(new Date())
 
   // Function to handle month navigation
   const handleMonthChange = (newMonth: Date) => {
-    setDisplayMonth(newMonth);
-  };
+    setDisplayMonth(newMonth)
+  }
 
   const filteredTimeSlots = timeSlots.filter((time) => {
-    if (!date) return false;
-    if (bookedSlots.includes(time)) return false;
+    if (!date) return false
+    if (bookedSlots.includes(time)) return false
 
-    const [hours, minutes] = time.split(":").map(Number);
-    const selectedDateTime = new Date(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      hours,
-      minutes
-    );
-    return isSameDay(date, currentDate)
-      ? selectedDateTime > currentDate
-      : selectedDateTime > startOfDay(currentDate);
-  });
+    const [hours, minutes] = time.split(":").map(Number)
+    const selectedDateTime = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hours, minutes)
+    return isSameDay(date, currentDate) ? selectedDateTime > currentDate : selectedDateTime > startOfDay(currentDate)
+  })
 
   useEffect(() => {
     if (searchParams) {
-      const service = searchParams.get("service");
+      const service = searchParams.get("service")
       if (service) {
-        const matchingService = services.find(
-          (s) => s.name === decodeURIComponent(service)
-        );
+        const matchingService = services.find((s) => s.name === decodeURIComponent(service))
         if (matchingService) {
-          setSelectedService(matchingService.name);
+          setSelectedService(matchingService.name)
         }
       }
     }
-  }, [searchParams]);
+  }, [searchParams])
 
   useEffect(() => {
     if (date) {
       const fetchBookedSlots = async () => {
         try {
-          const response = await fetch(
-            `/api/bookings?date=${format(date, "yyyy-MM-dd")}`
-          );
+          const response = await fetch(`/api/bookings?date=${format(date, "yyyy-MM-dd")}`)
           if (response.ok) {
-            const data = await response.json();
-            setBookedSlots(data.bookedSlots || []);
+            const data = await response.json()
+            setBookedSlots(data.bookedSlots || [])
           } else {
-            throw new Error("Failed to fetch booked slots");
+            throw new Error("Failed to fetch booked slots")
           }
         } catch (error) {
-          console.error(error);
+          console.error(error)
           toast({
             title: "Error",
             description: "Failed to fetch booked slots",
             variant: "destructive",
-          });
+          })
         }
-      };
-      fetchBookedSlots();
+      }
+      fetchBookedSlots()
     }
-  }, [date, toast]);
+  }, [date, toast])
 
   const handleBooking = () => {
-    if (
-      !date ||
-      !selectedTime ||
-      !selectedService ||
-      !customerName ||
-      !customerPhone
-    ) {
+    if (!date || !selectedTime || !selectedService || !customerName || !customerPhone) {
       toast({
         title: "Please fill in all fields",
         description: "All fields are required to make a booking.",
         variant: "destructive",
-      });
-      return;
+      })
+      return
     }
 
     // Format the date in a readable format
-    const formattedDate = date.toLocaleDateString();
-
-    // Create the message
-    const message = `Hello, I'm ${customerName} with phone number ${customerPhone}. I would like to book a ${selectedService} on ${formattedDate} at ${selectedTime}. Is this time slot available?`;
+    const formattedDate = date.toLocaleDateString()
 
     // The phone number to use for both WhatsApp and SMS
-    const phoneNumber = "355699929229";
+    const phoneNumber = "355699929229"
 
     try {
       // Record the booking in your system
@@ -132,60 +104,56 @@ export default function BookingPage() {
           date: formattedDate,
           time: selectedTime,
         }),
-      });
+      })
 
       // Update local state
-      setBookedSlots((prev) => [...prev, selectedTime]);
+      setBookedSlots((prev) => [...prev, selectedTime])
+
+      // Create the message with all booking details
+      const message = `Hello, I'm ${customerName} with phone number ${customerPhone}. I would like to book a ${selectedService} on ${formattedDate} at ${selectedTime}. Is this time slot available?`
 
       if (contactMethod === "whatsapp") {
-        // Encode the message for URL
-        const encodedMessage = encodeURIComponent(message);
-        // Create WhatsApp URL targeting your specific number
-        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-        // Open WhatsApp in a new tab
-        window.open(whatsappUrl, "_blank");
-        
+        // For WhatsApp: ensure the number is formatted correctly (no + sign needed for wa.me links)
+        const encodedMessage = encodeURIComponent(message)
+        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`
+        window.open(whatsappUrl, "_blank")
+
         toast({
           title: "Redirecting to WhatsApp",
           description: "Please send the message to complete your booking.",
-        });
+        })
       } else {
-        // For SMS
-        const encodedMessage = encodeURIComponent(message);
-        // SMS URL scheme
-        const smsUrl = `sms:${phoneNumber}?body=${encodedMessage}`;
-        // Open SMS app
-        window.location.href = smsUrl;
-        
+        // For SMS: format may vary by device/browser but standard format is used
+        const encodedMessage = encodeURIComponent(message)
+        const smsUrl = `sms:${phoneNumber}?body=${encodedMessage}`
+        window.location.href = smsUrl
+
         toast({
           title: "Opening SMS app",
           description: "Please send the message to complete your booking.",
-        });
+        })
       }
 
       // Reset form
-      setSelectedTime("");
-      setSelectedService("");
-      setCustomerName("");
-      setCustomerPhone("");
-      
+      setSelectedTime("")
+      setSelectedService("")
+      setCustomerName("")
+      setCustomerPhone("")
     } catch (error) {
-      console.error(error);
+      console.error(error)
       toast({
         title: "Error",
         description: "Failed to process your booking request",
         variant: "destructive",
-      });
+      })
     }
-  };
+  }
 
   return (
     <div className="max-w-7xl mx-auto py-24 px-4">
       <div className="text-center mb-12">
         <h1 className="text-4xl font-bold mb-4">Rezervo një Takim</h1>
-        <p className="text-lg text-muted-foreground">
-          Përzgjidh datën, orarin dhe shërbimin e dëshiruar
-        </p>
+        <p className="text-lg text-muted-foreground">Përzgjidh datën, orarin dhe shërbimin e dëshiruar</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -199,19 +167,11 @@ export default function BookingPage() {
               month={displayMonth}
               onMonthChange={handleMonthChange}
               className="rounded-md border"
-              disabled={(date) =>
-                isBefore(startOfDay(date), startOfDay(currentDate))
-              }
+              disabled={(date) => isBefore(startOfDay(date), startOfDay(currentDate))}
             />
           </div>
           <div className="w-full flex justify-center items-center mt-5">
-            <Image
-              width={600}
-              height={300}
-              alt="/"
-              src="/logo.svg"
-              className="w-2/4"
-            />
+            <Image width={600} height={300} alt="/" src="/logo.svg" className="w-2/4" />
           </div>
         </Card>
 
@@ -219,9 +179,7 @@ export default function BookingPage() {
           <h2 className="text-xl font-semibold mb-4">Detaje të Rezervimit</h2>
           <div className="space-y-4">
             <div>
-              <label className="text-sm font-medium mb-2 block">
-                Emri
-              </label>
+              <label className="text-sm font-medium mb-2 block">Emri</label>
               <input
                 type="text"
                 value={customerName}
@@ -231,9 +189,7 @@ export default function BookingPage() {
               />
             </div>
             <div>
-              <label className="text-sm font-medium mb-2 block">
-                Numri i Telefonit
-              </label>
+              <label className="text-sm font-medium mb-2 block">Numri i Telefonit</label>
               <input
                 type="tel"
                 value={customerPhone}
@@ -244,12 +200,10 @@ export default function BookingPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">
-                Zgjidhni Shërbimin
-              </label>
+              <label className="text-sm font-medium mb-2 block">Zgjidhni Shërbimin</label>
               <Select
                 onValueChange={(value) => {
-                  setSelectedService(value);
+                  setSelectedService(value)
                 }}
                 value={selectedService}
               >
@@ -267,9 +221,7 @@ export default function BookingPage() {
             </div>
 
             <div>
-              <label className="text-sm font-medium mb-2 block">
-                Select Time
-              </label>
+              <label className="text-sm font-medium mb-2 block">Select Time</label>
               <Select onValueChange={setSelectedTime} value={selectedTime}>
                 <SelectTrigger>
                   <SelectValue placeholder="Choose a time" />
@@ -283,16 +235,10 @@ export default function BookingPage() {
                 </SelectContent>
               </Select>
             </div>
-            
+
             <div>
-              <label className="text-sm font-medium mb-2 block">
-                Contact Method
-              </label>
-              <RadioGroup 
-                value={contactMethod} 
-                onValueChange={setContactMethod}
-                className="flex space-x-4"
-              >
+              <label className="text-sm font-medium mb-2 block">Contact Method</label>
+              <RadioGroup value={contactMethod} onValueChange={setContactMethod} className="flex space-x-4">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="whatsapp" id="whatsapp" />
                   <Label htmlFor="whatsapp">WhatsApp</Label>
@@ -307,13 +253,7 @@ export default function BookingPage() {
             <Button
               className="w-full mt-4"
               onClick={handleBooking}
-              disabled={
-                !date ||
-                !selectedTime ||
-                !selectedService ||
-                !customerName ||
-                !customerPhone
-              }
+              disabled={!date || !selectedTime || !selectedService || !customerName || !customerPhone}
             >
               Confirm Booking
             </Button>
@@ -321,5 +261,5 @@ export default function BookingPage() {
         </Card>
       </div>
     </div>
-  );
+  )
 }
