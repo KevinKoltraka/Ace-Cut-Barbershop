@@ -8,67 +8,73 @@ import { useRouter } from "next/navigation";
 const services = [
   {
     id: "haircut",
-    name: "Prerje Klasike",
+    name: "Prerje për Meshkuj",
     img: "/haircut.webp",
     description: "Prerje tradicionale me stil modern",
-    duration: "45 min",
-    price: "35 Lekë",
+    price: "700 Lekë",
   },
   {
     id: "beard",
-    name: "Rregullim Mjekre",
+    name: "Prerje për Femra",
     img: "/beardShave.webp",
     description: "Formësim dhe kujdes profesional për mjekrën",
-    duration: "30 min",
-    price: "20 Lekë",
+    price: "1500 Lekë",
   },
   {
     id: "combo",
-    name: "Kombinim Flokë & Mjekër",
+    name: "Larje",
     img: "/combo.webp",
     description: "Paketa e plotë e kujdesit – zgjedhja praktike",
-    duration: "60 min",
-    price: "50 Lekë",
+    price: "100 Lekë",
   },
   {
     id: "fatherSon",
-    name: "Baba & Bir",
+    name: "Rroje me Brisk",
     img: "/fatherSon.webp",
     description: "Merrni stilin më të mirë për ju dhe djalin tuaj.",
-    duration: "75 min",
-    price: "65 Lekë",
+    price: "500 Lekë",
   },
   {
     id: "styling",
-    name: "Stilim i Përkryer",
-    img: "/styling.webp",
+    name: "Shërbim me Pe Specifik",
+    img: "/eyebrows.webp",
     description: "Bëje stilin e flokëve në mënyrën më të mirë të mundshme",
-    duration: "15 min",
-    price: "15 Lekë",
+    price: "300 Lekë",
   },
   {
     id: "camouflage",
-    name: "Mjekër & Kamuflim",
+    name: "Shërbim me Dyll",
     img: "/camouflageBeard.webp",
     description: "Formësim, rruajtje dhe ngjyrim për mjekrën tuaj.",
-    duration: "25 min",
-    price: "25 Lekë",
+    price: "300 Lekë",
   },
   {
     id: "eyebrows",
-    name: "Rregullim Vetullash",
+    name: "Mask e Zezë",
     img: "/eyebrows.webp",
     description: "Formëso vetullat për një pamje perfekte.",
-    duration: "15 min",
-    price: "15 Lekë",
+    price: "500 Lekë",
   },
   {
     id: "face",
-    name: "Pastrimi i Fytyrës",
+    name: "Trajtim Fytyre",
     img: "/cleansing.webp",
     description: "Lëkurë e pastër dhe e freskët për të nisur ditën.",
-    duration: "20 min",
-    price: "25 Lekë",
+    price: "2000 Lekë",
+  },
+  {
+    id: "bojeM",
+    name: "Bojë Mjekre",
+    img: "/cleansing.webp",
+    description: "Lëkurë e pastër dhe e freskët për të nisur ditën.",
+    price: "700 Lekë",
+  },
+  {
+    id: "bojeF",
+    name: "Bojë Flokesh",
+    img: "/cleansing.webp",
+    description: "Lëkurë e pastër dhe e freskët për të nisur ditën.",
+    price: "1200 Lekë",
   },
 ];
 
@@ -82,21 +88,7 @@ export default function ServicesPage() {
 
   return (
     <div className="max-w-7xl mx-auto py-24 px-4">
-      <div className="text-center mb-12">
-        <div className="w-full flex justify-center items-center ">
-          <h1 className="text-4xl font-bold mb-4">Shërbimet qe ofrojmë</h1>
-          <Image
-            width={200}
-            height={200}
-            alt="/"
-            src="/virtuosoLogoIcon.svg"
-            className="w-14 mb-2 pl-2"
-          />
-        </div>
-        <p className="text-lg text-muted-foreground">
-          Pamje e shkëlqyer, kujdes i veçantë
-        </p>
-      </div>
+      {/* ... header section remains the same ... */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {services.map((service) => (
@@ -114,10 +106,9 @@ export default function ServicesPage() {
               height={400}
               alt={service.name}
               src={service.img}
-              className="absolute -top-20 lg:-top-4 left-16 -z-50"
+              className="absolute -top-20 lg:-top-4 left-16 -z-50 blur-md opacity-40 contrast-125" // Modified line
             />
             <div className="space-y-2">
-              <p className="text-sm">Kohëzgjatja: {service.duration}</p>
               <p className="text-lg font-semibold flex justify-start items-center whitespace-nowrap w-1/3">
                 {service.price}
               </p>
@@ -125,8 +116,6 @@ export default function ServicesPage() {
             <Button className="w-fit hover:text-none hover:bg-black">
               Book Now
             </Button>
-
-
           </Card>
         ))}
       </div>

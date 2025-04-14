@@ -94,7 +94,7 @@ export default function Home() {
             <Link href="/booking">
               <FeatureCard
                 icon={Clock}
-                title="Orar Fleksible"
+                title="Orare Fleksible"
                 description="Hapur 7 ditë në javë për lehtësinë tuaj"
               />
             </Link>
