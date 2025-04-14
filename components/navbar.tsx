@@ -21,12 +21,26 @@ const Navbar = () => {
   ];
 
   const products = [
-    { name: "Depot No.303 Modelling Wax 100ml", href: "https://www.instagram.com/ace_cut_salon?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-    { name: "Depot 301 Matt Paste 75 ml", href: "https://www.instagram.com/ace_cut_salon?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-    { name: "Depot No. 314 Shiny Hair Wax", href: "https://www.instagram.com/ace_cut_salon?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-    { name: "Depot No. 315 Fixing Pomade", href: "https://www.instagram.com/ace_cut_salon?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
-    { name: "Depot No. 302 Clay Pomade", href: "https://www.instagram.com/ace_cut_salon?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" },
+    { name: "Depot No.303 Modelling Wax 100ml", handle: "ace_cut_salon" },
+    { name: "Depot 301 Matt Paste 75 ml", handle: "ace_cut_salon" },
+    { name: "Depot No. 314 Shiny Hair Wax", handle: "ace_cut_salon" },
+    { name: "Depot No. 315 Fixing Pomade", handle: "ace_cut_salon" },
+    { name: "Depot No. 302 Clay Pomade", handle: "ace_cut_salon" },
   ];
+
+  const handleProductClick = (e: React.MouseEvent, handle: string) => {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    const webUrl = `https://www.instagram.com/${handle}`;
+    const appUrl = `instagram://user?username=${handle}`;
+
+    if (isMobile) {
+      e.preventDefault();
+      window.location.href = appUrl;
+      setTimeout(() => {
+        window.location.href = webUrl;
+      }, 500);
+    }
+  };
 
   const handleMouseEnter = () => {
     clearTimeout(hoverTimeout);
@@ -112,14 +126,17 @@ const Navbar = () => {
                 : "opacity-0 invisible -translate-y-2"
             }`}>
               {products.map((product) => (
-                <Link
+                <a
                   key={product.name}
-                  href={product.href}
+                  href={`https://www.instagram.com/${product.handle}`}
+                  onClick={(e) => handleProductClick(e, product.handle)}
                   className="block px-4 py-3 text-sm hover:bg-accent transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onMouseEnter={() => clearTimeout(hoverTimeout)}
                 >
                   {product.name}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
@@ -166,17 +183,20 @@ const Navbar = () => {
                 : "opacity-0 max-h-0 overflow-hidden"
             }`}>
               {products.map((product) => (
-                <Link
+                <a
                   key={product.name}
-                  href={product.href}
-                  className="text-lg text-muted-foreground hover:text-primary"
-                  onClick={() => {
+                  href={`https://www.instagram.com/${product.handle}`}
+                  onClick={(e) => {
+                    handleProductClick(e, product.handle);
                     setMenuOpen(false);
                     setIsProductsOpen(false);
                   }}
+                  className="text-lg text-muted-foreground hover:text-primary"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   {product.name}
-                </Link>
+                </a>
               ))}
             </div>
           </div>
