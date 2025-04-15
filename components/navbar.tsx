@@ -3,71 +3,19 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/mode-toggle";
-import { Menu, X, ChevronDown, ChevronUp } from "lucide-react";
-import { useState, useEffect, useRef } from "react";
+import { Menu, X } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isProductsOpen, setIsProductsOpen] = useState(false);
-  const [isHoveringProducts, setIsHoveringProducts] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  let hoverTimeout: NodeJS.Timeout;
 
   const routes = [
     { href: "/", label: "Kreu" },
     { href: "/services", label: "Shërbimet" },
+    { href: "/products", label: "Produktet" },
     { href: "/booking", label: "Rezervo Tani" },
   ];
-
-  const products = [
-    { name: "Depot No.303 Modelling Wax 100ml", handle: "ace_cut_salon" },
-    { name: "Depot 301 Matt Paste 75 ml", handle: "ace_cut_salon" },
-    { name: "Depot No. 314 Shiny Hair Wax", handle: "ace_cut_salon" },
-    { name: "Depot No. 315 Fixing Pomade", handle: "ace_cut_salon" },
-    { name: "Depot No. 302 Clay Pomade", handle: "ace_cut_salon" },
-  ];
-
-  const handleProductClick = (e: React.MouseEvent, handle: string) => {
-    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const webUrl = `https://www.instagram.com/${handle}`;
-    const appUrl = `instagram://user?username=${handle}`;
-
-    if (isMobile) {
-      e.preventDefault();
-      window.location.href = appUrl;
-      setTimeout(() => {
-        window.location.href = webUrl;
-      }, 500);
-    }
-  };
-
-  const handleMouseEnter = () => {
-    clearTimeout(hoverTimeout);
-    setIsHoveringProducts(true);
-  };
-
-  const handleMouseLeave = () => {
-    hoverTimeout = setTimeout(() => {
-      setIsHoveringProducts(false);
-    }, 300);
-  };
-
-  const toggleProducts = () => {
-    setIsProductsOpen(!isProductsOpen);
-  };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsHoveringProducts(false);
-        setIsProductsOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   return (
     <nav className="fixed flex justify-center items-center w-full top-0 bg-gradient-to-b from-background to-background/60 backdrop-blur-sm h-16 md:h-20 z-50">
@@ -90,7 +38,7 @@ const Navbar = () => {
           </button>
         </div>
 
-        <div className="hidden lg:flex items-center justify-end space-x-8 relative">
+        <div className="hidden lg:flex items-center justify-end space-x-8">
           {routes.map((route) => (
             <Link
               key={route.href}
@@ -104,43 +52,6 @@ const Navbar = () => {
               {route.label}
             </Link>
           ))}
-
-          <div 
-            className="relative"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            ref={dropdownRef}
-          >
-            <button
-              className={`flex items-center gap-1 text-sm font-medium ${
-                isHoveringProducts ? "text-primary" : "text-muted-foreground"
-              }`}
-            >
-              Produktet
-              {isHoveringProducts ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-            </button>
-            
-            <div className={`absolute top-full left-0 mt-2 w-64 bg-background rounded-lg shadow-lg border transition-all duration-300 ${
-              isHoveringProducts 
-                ? "opacity-100 visible translate-y-0" 
-                : "opacity-0 invisible -translate-y-2"
-            }`}>
-              {products.map((product) => (
-                <a
-                  key={product.name}
-                  href={`https://www.instagram.com/${product.handle}`}
-                  onClick={(e) => handleProductClick(e, product.handle)}
-                  className="block px-4 py-3 text-sm hover:bg-accent transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onMouseEnter={() => clearTimeout(hoverTimeout)}
-                >
-                  {product.name}
-                </a>
-              ))}
-            </div>
-          </div>
-
           <ModeToggle />
         </div>
       </div>
@@ -167,40 +78,6 @@ const Navbar = () => {
               {route.label}
             </Link>
           ))}
-
-          <div className="flex flex-col items-center">
-            <button
-              onClick={toggleProducts}
-              className="font-medium text-2xl text-muted-foreground flex items-center gap-2"
-            >
-              Produktet
-              {isProductsOpen ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
-            </button>
-            
-            <div className={`mt-4 flex flex-col items-center space-y-4 transition-all duration-300 ${
-              isProductsOpen 
-                ? "opacity-100 max-h-96" 
-                : "opacity-0 max-h-0 overflow-hidden"
-            }`}>
-              {products.map((product) => (
-                <a
-                  key={product.name}
-                  href={`https://www.instagram.com/${product.handle}`}
-                  onClick={(e) => {
-                    handleProductClick(e, product.handle);
-                    setMenuOpen(false);
-                    setIsProductsOpen(false);
-                  }}
-                  className="text-lg text-muted-foreground hover:text-primary"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {product.name}
-                </a>
-              ))}
-            </div>
-          </div>
-
           <ModeToggle />
         </div>
       </div>
