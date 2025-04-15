@@ -1,9 +1,7 @@
-// app/products/[id]/page.tsx
 "use client";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import React from "react";
 
 interface ProductPageProps {
   params: {
@@ -29,9 +27,7 @@ interface Product {
 }
 
 const ProductPage = ({ params }: ProductPageProps) => {
-  const [showOptions, setShowOptions] = useState<boolean>(false);
-
-  // Toggle visibility of the options on button click
+  const [showOptions, setShowOptions] = useState(false);
   const toggleOptions = () => setShowOptions(!showOptions);
 
   const products: Product[] = [
@@ -201,6 +197,14 @@ const ProductPage = ({ params }: ProductPageProps) => {
     );
   }
 
+  // Encode the message with product name for URLs
+  const whatsappMessage = encodeURIComponent(
+    `Pershendetje, dua të blej produktin: ${product.name}`
+  );
+  const smsMessage = encodeURIComponent(
+    `Pershendetje, dua të blej produktin: ${product.name}`
+  );
+
   return (
     <div className="container mx-auto px-4 pt-24 md:pt-28 pb-12">
       <div className="flex flex-col md:flex-row gap-8 mb-8">
@@ -210,7 +214,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
             <Image
               src={product.image}
               alt={product.name}
-              width={600} // Add explicit dimensions
+              width={600}
               height={400}
               className="object-cover transition-transform duration-300 group-hover:scale-105"
               quality={85}
@@ -281,8 +285,8 @@ const ProductPage = ({ params }: ProductPageProps) => {
             </div>
           )}
 
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 sm:items-start sm:justify-start items-center justify-center">
+         {/* Action Buttons */}
+         <div className="flex flex-col sm:flex-row gap-4 sm:items-start sm:justify-start items-center justify-center">
             <Link
               href="/products"
               className="inline-block px-4 py-3 md:px-6 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-center whitespace-nowrap w-60 sm:w-auto"
@@ -292,13 +296,13 @@ const ProductPage = ({ params }: ProductPageProps) => {
 
             <button
               className="px-4 py-3 md:px-6 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap w-36 sm:w-auto"
-              onClick={toggleOptions} // Trigger the display or hide of options
+              onClick={toggleOptions}
             >
               Blej Tani
             </button>
           </div>
 
-          {/* Conditional rendering of WhatsApp and SMS options with smoother animations */}
+          {/* Contact Options */}
           <div
             className={`flex flex-col sm:flex-row gap-2 mt-4 transition-all duration-300 ease-in-out ${
               showOptions
@@ -309,17 +313,15 @@ const ProductPage = ({ params }: ProductPageProps) => {
             {showOptions && (
               <>
                 <a
-                  href={`https://wa.me/355699929229?text=${encodeURIComponent(
-                    `Pershendetje, dua te blej produktin: ${product.name}`
-                  )}`}
+                  href={`https://wa.me/355699929229?text=${whatsappMessage}`}
                   className="px-3 py-2 bg-green-500 text-white rounded-lg text-center hover:bg-green-600 transition-colors text-sm"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Kontakto ne WhatsApp
                 </a>
                 <a
-                  href={`sms:+355699929229?body=${encodeURIComponent(
-                    `Pershendetje, dua te blej produktin: ${product.name}`
-                  )}`}
+                  href={`sms:+355699929229?body=${smsMessage}`}
                   className="px-3 py-2 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-600 transition-colors text-sm"
                 >
                   Kontakto me SMS
