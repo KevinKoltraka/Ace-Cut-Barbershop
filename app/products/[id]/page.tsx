@@ -310,7 +310,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
 
           {/* Conditional rendering of WhatsApp and SMS options */}
           <div
-            className={`flex flex-col sm:flex-row gap-2 mt-4 transition-all duration-300 ease-in-out ${
+            className={`flex flex-row sm:flex-row flex-wrap justify-left gap-2 mt-4 transition-all duration-300 ease-in-out ${
               showOptions
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-4 pointer-events-none"
@@ -322,7 +322,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
                   href={`https://api.whatsapp.com/send?phone=355699929229&text=${encodeURIComponent(
                     `Pershendetje, dua te blej produktin: ${product.name}`
                   )}`}
-                  className="px-3 py-2 bg-green-500 text-white rounded-lg text-center hover:bg-green-600 transition-colors text-sm"
+                  className="w-[48%] sm:w-auto px-2 py-2 bg-green-500 text-white rounded-lg text-center hover:bg-green-600 transition-colors text-sm"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -334,7 +334,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
                       `Pershendetje, dua te blej produktin: ${product.name}`
                     )
                   )}`}
-                  className="px-3 py-2 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-600 transition-colors text-sm"
+                  className="w-[48%] sm:w-auto px-2 py-2 bg-blue-500 text-white rounded-lg flex justify-center items-center hover:bg-blue-600 transition-colors text-sm text-center"
                 >
                   Kontakto me SMS
                 </a>
