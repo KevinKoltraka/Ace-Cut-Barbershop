@@ -58,6 +58,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
       },
       ingredients: `Aqua (Water), Ceteareth-25, PEG-7 Glyceryl Cocoate, Propylene Glycol, Glycerin, PEG-40 Hydrogenated Castor Oil, Camellia Sinensis Leaf Extract, Helianthus Annuus (Sunflower) Seed Oil, Aloe Barbadensis Leaf Juice, Commiphora Myrrha Resin Extract, Angelica Archangelica Root Extract, Acorus Calamus Root Extract, Eugenia Caryophyllus (Clove) Bud Extract, Myristica Fragrans (Nutmeg) Fruit Extract, Piper Nigrum (Pepper) Fruit Extract, Curcuma Zedoaria Root Extract, Zingiber Officinale (Ginger) Rhizome Extract, Elettaria Cardamomum Seed Extract, Alcohol, PVP, Phenoxyethanol, Caprylyl Glycol, Caramel, Parfum (Fragrance), Cinnamal, Eugenol, Hexyl Cinnamal, Limonene, Linalool.`,
     },
+    // ... other products remain the same
     {
       id: 2,
       name: "Depot No.301 Matt Paste 100ml",
@@ -115,7 +116,6 @@ const ProductPage = ({ params }: ProductPageProps) => {
       },
       ingredients: `Aqua (Water), Ceteareth-25, PEG-7 Glyceryl Cocoate, Propylene Glycol, Glycerin, Aloe Barbadensis Leaf Juice, Polymethyl Methacrylate, Ceteareth-30, Stearic Acid, Copernicia Cerifera Cera (Carnauba Wax), Helianthus Annuus (Sunflower) Seed Oil, Camellia Sinensis Leaf Extract, PVP, Phenoxyethanol, Parfum (Fragrance), Limonene, Linalool, Hexyl Cinnamal, Cinnamal.`,
     },
-
     {
       id: 4,
       name: "Depot No.315 Fixing Pomade 75ml",
@@ -198,13 +198,39 @@ const ProductPage = ({ params }: ProductPageProps) => {
     );
   }
 
-  // Encode the message with product name for URLs
+  // Encode the message for WhatsApp
   const whatsappMessage = encodeURIComponent(
     `Pershendetje, dua të blej produktin: ${product.name}`
   );
+  
+  // Phone number without special characters for better compatibility
+  const phoneNumber = "355699929229";
   const smsMessage = encodeURIComponent(
-    `Pershendetje, dua të blej produktin: ${product.name}`
+    `Pershendetje, dua te blej produktin: ${product.name}`
   );
+
+  // Function to handle SMS action with TypeScript-safe device detection
+  const handleSMSClick = () => {
+    // TypeScript-safe iOS detection
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    
+    // For iOS 8+ devices: use sms: with an '&' separator
+    const iosFormat = `sms:${phoneNumber}&body=${smsMessage}`;
+    
+    // For Android and other devices: use sms: with a '?' separator
+    const androidFormat = `sms:${phoneNumber}?body=${smsMessage}`;
+    
+    // For older iOS devices: try fallback with just the number
+    const fallbackFormat = `sms:${phoneNumber}`;
+    
+    // Use the appropriate format based on device detection
+    try {
+      window.location.href = isIOS ? iosFormat : androidFormat;
+    } catch (e) {
+      // Fallback for any errors
+      window.location.href = fallbackFormat;
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 pt-24 md:pt-28 pb-12">
@@ -319,23 +345,19 @@ const ProductPage = ({ params }: ProductPageProps) => {
             {showOptions && (
               <>
                 <a
-                  href={`https://api.whatsapp.com/send?phone=355699929229&text=${encodeURIComponent(
-                    `Pershendetje, dua te blej produktin: ${product.name}`
-                  )}`}
+                  href={`https://api.whatsapp.com/send?phone=${phoneNumber}&text=${whatsappMessage}`}
                   className="w-[48%] sm:w-auto px-2 py-2 bg-green-500 text-white rounded-lg text-center hover:bg-green-600 transition-colors text-sm"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Kontakto ne WhatsApp
                 </a>
-                <a
-                  href={`sms:+355699929229?body=${encodeURIComponent(
-                    `Pershendetje, dua te blej produktin: ${product.name}`
-                  )}`}
+                <button
+                  onClick={handleSMSClick}
                   className="w-[48%] sm:w-auto px-2 py-2 bg-blue-500 text-white rounded-lg flex justify-center items-center hover:bg-blue-600 transition-colors text-sm text-center"
                 >
                   Kontakto me SMS
-                </a>
+                </button>
               </>
             )}
           </div>
