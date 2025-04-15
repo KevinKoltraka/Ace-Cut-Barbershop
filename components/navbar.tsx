@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Menu, X } from "lucide-react";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -24,20 +25,49 @@ const Navbar = () => {
           <Link href="/">
             <div className="flex items-center space-x-2 text-white text-2xl font-bold">
               <span className="text-orange-500 text-sm">x</span>
-              <span className="text-neutral-900 dark:text-white">Ace Cut</span>
+              {/* Theme-responsive logo container */}
+              <div className="relative w-32 h-10">
+                {/* Light mode logo */}
+                <div className="relative w-full h-full dark:hidden">
+                  <Image
+                    src="/logo/black-logo.svg"
+                    alt="Ace Cut Light Logo"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+                {/* Dark mode logo */}
+                <div className="relative w-full h-full hidden dark:block">
+                  <Image
+                    src="/logo/white-logo.svg"
+                    alt="Ace Cut Dark Logo"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </div>
               <span className="text-orange-500 text-sm">x</span>
             </div>
           </Link>
 
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="lg:hidden absolute right-4 top-5 z-100"
-            aria-label="Toggle Menu"
-          >
-            {menuOpen ? <X size="30" /> : <Menu size="30" />}
-          </button>
+          {/* Mobile controls */}
+          <div className="flex items-center gap-4">
+            <div className="lg:hidden">
+              <ModeToggle />
+            </div>
+            <button
+              onClick={() => setMenuOpen(!menuOpen)}
+              className="lg:hidden"
+              aria-label="Toggle Menu"
+            >
+              {menuOpen ? <X size="30" /> : <Menu size="30" />}
+            </button>
+          </div>
         </div>
 
+        {/* Desktop navigation */}
         <div className="hidden lg:flex items-center justify-end space-x-8">
           {routes.map((route) => (
             <Link
@@ -56,13 +86,15 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile menu */}
       <div
-        className={`lg:hidden fixed top-0 left-0 w-full h-screen bg-background/95 backdrop-blur-lg flex flex-col justify-center items-center transition-all duration-300 ease-in-out z-40 ${
+        className={`lg:hidden fixed top-16 left-0 w-full h-[calc(100vh-4rem)] bg-background/95 backdrop-blur-lg flex flex-col justify-center items-center transition-all duration-300 ease-in-out z-40 ${
           menuOpen
             ? "translate-x-0 opacity-100 visible"
             : "-translate-x-full opacity-0 invisible"
         }`}
       >
+        {/* Mobile menu content remains the same */}
         <div className="flex flex-col items-center space-y-6 py-4">
           {routes.map((route) => (
             <Link
@@ -78,7 +110,6 @@ const Navbar = () => {
               {route.label}
             </Link>
           ))}
-          <ModeToggle />
         </div>
       </div>
     </nav>
