@@ -329,10 +329,8 @@ const ProductPage = ({ params }: ProductPageProps) => {
                   Kontakto ne WhatsApp
                 </a>
                 <a
-                  href={`sms:+355699929229;?&body=${encodeURIComponent(
-                    encodeURIComponent(
-                      `Pershendetje, dua te blej produktin: ${product.name}`
-                    )
+                  href={`sms:+355699929229?body=${encodeURIComponent(
+                    `Pershendetje, dua te blej produktin: ${product.name}`
                   )}`}
                   className="w-[48%] sm:w-auto px-2 py-2 bg-blue-500 text-white rounded-lg flex justify-center items-center hover:bg-blue-600 transition-colors text-sm text-center"
                 >
