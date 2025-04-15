@@ -8,23 +8,32 @@ export default function Footer() {
       <div className="container mx-auto flex flex-col px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-
             <div className="flex items-center space-x-2 mb-4">
-              <div
-                className="w-2/3 flex items-center justify-center"
-                style={{ borderRadius: "20px", height: "100px" }}
-              >
+              <div className="w-2/3 flex items-center justify-center rounded-[20px] h-[100px]">
                 <span className="text-amber-500 text-sm">x</span>
-                <span
-                  className="mx-4 text-4xl font-bold text-neutral-900 dark:text-white"
-                  style={{ fontFamily: 'Roboto, sans-serif' }}
-                >
-                  Ace Cut
-                </span>
+                <div className="relative mx-4 h-10 w-32">
+                  <div className="relative w-full h-full dark:hidden">
+                    <Image
+                      src="/logo/black-logo.svg"
+                      alt="Ace Cut Light Logo"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                  <div className="relative w-full h-full hidden dark:block">
+                    <Image
+                      src="/logo/white-logo.svg"
+                      alt="Ace Cut Dark Logo"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
+                  </div>
+                </div>
                 <span className="text-amber-500 text-sm">x</span>
               </div>
             </div>
-
 
             <p className="text-muted-foreground max-w-[250px] text-left">
               Premium Barbershop
@@ -42,10 +51,11 @@ export default function Footer() {
                 <span>+355 69 992 9229</span>
               </div>
               <div className="flex items-center space-x-2 text-muted-foreground">
-                <Instagram className="w-4 h-4" />  {/* Use the Instagram icon here */}
-                <span>ace_cut_salon</span> {/* Update with your Instagram handle */}
+                <Instagram className="w-4 h-4" />{" "}
+                {/* Use the Instagram icon here */}
+                <span>ace_cut_salon</span>{" "}
+                {/* Update with your Instagram handle */}
               </div>
-
             </div>
           </div>
           <div>
@@ -68,36 +78,21 @@ export default function Footer() {
 
           <div>
             <h3 className="font-semibold mb-4">Our Location</h3>
-            <div className="w-full h-64 overflow-hidden" style={{ borderRadius: "20px" }}>
+            <div className="w-full h-64 overflow-hidden rounded-[20px]">
               <iframe
+                title="Ace Cut Location Map"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2996.708130190718!2d19.80495699291967!3d41.31521267790919!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x135031db120e3a5b%3A0x95ab118a163ecd52!2sAce%20Cut!5e0!3m2!1sen!2s!4v1744556002940!5m2!1sen!2s"
                 width="100%"
                 height="100%"
-                style={{ border: 0 }}
-                allowFullScreen={true}
-                loading="lazy"
+                className="border-0"
+                allowFullScreen
               ></iframe>
             </div>
           </div>
-
         </div>
 
         <div className="mt-12 pt-8 text-center text-muted-foreground">
-          <p>
-            &copy; {new Date().getFullYear()} Ace Cut. All rights
-            reserved.
-          </p>
-          {/*<p>
-            Website created by{" "}
-            <a
-              href="https://lyubomir-iliev-portfolio.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-yellow-600 underline"
-            >
-              Lyubomir.Dev
-            </a>
-          </p>*/}
+          <p>&copy; {new Date().getFullYear()} Ace Cut. All rights reserved.</p>
         </div>
       </div>
     </footer>
