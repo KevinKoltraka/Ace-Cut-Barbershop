@@ -300,7 +300,7 @@ const ProductPage = ({ params }: ProductPageProps) => {
 
           {/* Conditional rendering of WhatsApp and SMS options with smoother animations */}
           <div
-            className={`flex flex-r sm:justify-start items-center justify-center gap-2 mt-4 transition-all duration-300 ease-in-out ${
+            className={`flex flex-col sm:flex-row gap-2 mt-4 transition-all duration-300 ease-in-out ${
               showOptions
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-4 pointer-events-none"
@@ -309,14 +309,18 @@ const ProductPage = ({ params }: ProductPageProps) => {
             {showOptions && (
               <>
                 <a
-                  href="https://wa.me/355699929229?text=Pershendetje,%20dua%20te%20blej%20produktin."
-                  className="px-2 py-1 sm:py-3 bg-green-500 text-white rounded-lg text-center hover:bg-green-600 transition-colors w-40 sm:w-auto text-sm"
+                  href={`https://wa.me/355699929229?text=${encodeURIComponent(
+                    `Pershendetje, dua te blej produktin: ${product.name}`
+                  )}`}
+                  className="px-3 py-2 bg-green-500 text-white rounded-lg text-center hover:bg-green-600 transition-colors text-sm"
                 >
                   Kontakto ne WhatsApp
                 </a>
                 <a
-                  href="sms:+355699929229?body=Pershendetje,%20dua%20te%20blej%20produktin."
-                  className="px-2 py-3 sm:py-3 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-600 transition-colors w-36 sm:w-auto text-sm"
+                  href={`sms:+355699929229?body=${encodeURIComponent(
+                    `Pershendetje, dua te blej produktin: ${product.name}`
+                  )}`}
+                  className="px-3 py-2 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-600 transition-colors text-sm"
                 >
                   Kontakto me SMS
                 </a>
