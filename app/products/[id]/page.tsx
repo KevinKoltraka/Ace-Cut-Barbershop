@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 interface ProductPageProps {
   params: {
@@ -285,8 +286,8 @@ const ProductPage = ({ params }: ProductPageProps) => {
             </div>
           )}
 
-         {/* Action Buttons */}
-         <div className="flex flex-col sm:flex-row gap-4 sm:items-start sm:justify-start items-center justify-center">
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 sm:items-start sm:justify-start items-center justify-center">
             <Link
               href="/products"
               className="inline-block px-4 py-3 md:px-6 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors text-center whitespace-nowrap w-60 sm:w-auto"
@@ -295,14 +296,19 @@ const ProductPage = ({ params }: ProductPageProps) => {
             </Link>
 
             <button
-              className="px-4 py-3 md:px-6 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap w-36 sm:w-auto"
+              className="px-4 py-3 md:px-6 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors whitespace-nowrap w-36 sm:w-auto flex items-center justify-center gap-2"
               onClick={toggleOptions}
             >
               Blej Tani
+              {showOptions ? (
+                <ChevronUp className="w-4 h-4" />
+              ) : (
+                <ChevronDown className="w-4 h-4" />
+              )}
             </button>
           </div>
 
-          {/* Contact Options */}
+          {/* Conditional rendering of WhatsApp and SMS options */}
           <div
             className={`flex flex-col sm:flex-row gap-2 mt-4 transition-all duration-300 ease-in-out ${
               showOptions
@@ -313,7 +319,9 @@ const ProductPage = ({ params }: ProductPageProps) => {
             {showOptions && (
               <>
                 <a
-                  href={`https://wa.me/355699929229?text=${whatsappMessage}`}
+                  href={`https://api.whatsapp.com/send?phone=355699929229&text=${encodeURIComponent(
+                    `Pershendetje, dua te blej produktin: ${product.name}`
+                  )}`}
                   className="px-3 py-2 bg-green-500 text-white rounded-lg text-center hover:bg-green-600 transition-colors text-sm"
                   target="_blank"
                   rel="noopener noreferrer"
@@ -321,7 +329,11 @@ const ProductPage = ({ params }: ProductPageProps) => {
                   Kontakto ne WhatsApp
                 </a>
                 <a
-                  href={`sms:+355699929229?body=${smsMessage}`}
+                  href={`sms:+355699929229;?&body=${encodeURIComponent(
+                    encodeURIComponent(
+                      `Pershendetje, dua te blej produktin: ${product.name}`
+                    )
+                  )}`}
                   className="px-3 py-2 bg-blue-500 text-white rounded-lg text-center hover:bg-blue-600 transition-colors text-sm"
                 >
                   Kontakto me SMS
